@@ -43,6 +43,6 @@ public class MainActivity extends Activity {
     }
 
     public void onRedo(View view) {
-        Toast.makeText(this, "onRedo", Toast.LENGTH_SHORT).show();
+        keeper.redo(this, getEdit());
     }
 }

@@ -40,6 +40,22 @@ class ComposedCommand extends EditCommand {
     }
 }
 
+class SelectCommand extends EditCommand {
+    private int start = -1;
+    private int stop = -1;
+
+    @Override
+    void execute(Context context, EditText edit) {
+        start = edit.getSelectionStart();
+        stop = edit.getSelectionEnd();
+    }
+
+    @Override
+    void undo(Context context, EditText edit) {
+        edit.setSelection(start, stop);
+    }
+}
+
 class DeleteCommand extends EditCommand {
     private int position = -1;
     private CharSequence text = "";
@@ -124,12 +140,14 @@ class CopyCommand extends EditCommand {
 class CutCommand extends ComposedCommand {
     CutCommand() {
         addCommand(new CopyCommand());
+        addCommand(new SelectCommand());
         addCommand(new DeleteCommand());
     }
 }
 
 class PasteCommand extends ComposedCommand {
     PasteCommand() {
+        addCommand(new SelectCommand());
         addCommand(new DeleteCommand());
         addCommand(new InsertClipCommand());
     }
