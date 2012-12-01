@@ -5,15 +5,16 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
-    private EditCommandKeeper keeper = new EditCommandKeeper();
+    private EditHistorian historian = new EditHistorian();
+    private EditControl control = new EditControl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getEdit().addTextChangedListener(historian);
     }
 
     private EditText getEdit() {
@@ -27,22 +28,22 @@ public class MainActivity extends Activity {
     }
 
     public void onCut(View view) {
-        keeper.cut(this, getEdit());
+        control.cut(this, getEdit());
     }
 
     public void onCopy(View view) {
-        keeper.copy(this, getEdit());
+        control.copy(this, getEdit());
     }
 
     public void onPaste(View view) {
-        keeper.paste(this, getEdit());
+        control.paste(this, getEdit());
     }
 
     public void onUndo(View view) {
-        keeper.undo(this, getEdit());
+        historian.undo(getEdit().getText());
     }
 
     public void onRedo(View view) {
-        keeper.redo(this, getEdit());
+        historian.redo(getEdit().getText());
     }
 }
